@@ -1,0 +1,37 @@
+<div class="w-full h-screen flex flex-col gap-10 px-24">
+  <% if notice %>
+    <p class="text-green-500"><%= notice %></p>
+  <% end %>
+
+  <!-- Renderiza os detalhes do alimento -->
+  <%= render @food %>
+
+  <!-- Seção de cálculo de calorias -->
+  <div class="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow duration-300">
+    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Calcular Calorias</h3>
+
+    <%= form_with url: calculate_calories_food_path(@food), method: :get, local: true, class: "flex flex-col gap-6" do %>
+      <div class="field flex flex-col gap-2">
+        <%= label_tag :quantity, "Informe a quantidade (em gramas):", class: "text-gray-700 text-lg" %>
+        <%= number_field_tag :quantity, 100, class: "p-2 border rounded-lg w-40" %>
+      </div>
+
+      <%= submit_tag "Calcular", class: "bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition-colors duration-200 w-40 text-center" %>
+    <% end %>
+
+    <!-- Exibição do resultado de calorias -->
+    <% if @calories.present? %>
+      <p class="text-gray-700 mt-4">
+        Total de calorias para <%= params[:quantity] %>g: 
+        <strong class="text-blue-600"><%= @calories %> kcal</strong>
+      </p>
+    <% end %>
+  </div>
+
+  <div class="flex gap-4 mt-6">
+    <%= link_to "Edit this food", edit_food_path(@food), class: "text-indigo-600 hover:underline font-medium" %>
+    |
+    <%= link_to "Back to foods", foods_path, class: "text-indigo-600 hover:underline font-medium" %>
+    <%= button_to "Destroy this food", @food, method: :delete, class: "text-red-600 hover:underline font-medium" %>
+  </div>
+</div>
